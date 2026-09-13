@@ -200,7 +200,7 @@ def tailor_application(job: dict) -> dict:
 
     message = client.messages.create(
         model=model,
-        max_tokens=4096,
+        max_tokens=8192,
         system=system,
         messages=[{"role": "user", "content": user_message}],
     )

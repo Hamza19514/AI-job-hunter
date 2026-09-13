@@ -26,6 +26,41 @@ def extract_text(message) -> str:
 _JSON_BLOCK_RE = re.compile(r"<RESULTS_JSON>(.*?)</RESULTS_JSON>", re.DOTALL)
 
 
+def _escape_bare_control_chars(raw: str) -> str:
+    """Models occasionally emit a literal newline/tab inside a JSON string
+    value instead of an escaped \\n/\\t, which breaks strict JSON parsing.
+    Walks the text and escapes control characters that fall inside a
+    string literal (tracking quote/escape state), leaving structural
+    whitespace between tokens untouched."""
+    out = []
+    in_string = False
+    escaped = False
+    for ch in raw:
+        if in_string:
+            if escaped:
+                out.append(ch)
+                escaped = False
+            elif ch == "\\":
+                out.append(ch)
+                escaped = True
+            elif ch == '"':
+                out.append(ch)
+                in_string = False
+            elif ch == "\n":
+                out.append("\\n")
+            elif ch == "\t":
+                out.append("\\t")
+            elif ch == "\r":
+                out.append("\\r")
+            else:
+                out.append(ch)
+        else:
+            if ch == '"':
+                in_string = True
+            out.append(ch)
+    return "".join(out)
+
+
 def extract_json_payload(text: str):
     """Pulls the JSON object out of a model response wrapped in
     <RESULTS_JSON>...</RESULTS_JSON> tags, falling back to the largest
@@ -41,4 +76,14 @@ def extract_json_payload(text: str):
             raise ValueError(f"No JSON payload found in model response:\n{text[:2000]}")
         raw = text[start : end + 1]
 
-    return json.loads(raw)
+    try:
+        return json.loads(raw, strict=False)
+    except json.JSONDecodeError:
+        pass
+
+    try:
+        return json.loads(_escape_bare_control_chars(raw), strict=False)
+    except json.JSONDecodeError as exc:
+        raise ValueError(
+            f"Could not parse JSON from model response ({exc}):\n{raw[:3000]}"
+        ) from exc

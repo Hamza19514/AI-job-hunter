@@ -198,19 +198,26 @@ def hunt_jobs(already_seen_keys, max_jobs):
 
     message = client.messages.create(
         model=model,
-        max_tokens=8192,
+        max_tokens=16000,
         system=system,
         tools=[
             {
                 "type": "web_search_20250305",
                 "name": "web_search",
-                "max_uses": 25,
+                "max_uses": 15,
             }
         ],
         messages=[{"role": "user", "content": user_message}],
     )
 
     text = extract_text(message)
+    if not text.strip():
+        block_types = [getattr(b, "type", "?") for b in message.content]
+        raise RuntimeError(
+            f"Agent 1 produced no text output (stop_reason={message.stop_reason}, "
+            f"content blocks={block_types}). It likely ran out of output tokens "
+            f"mid-research before writing its final answer."
+        )
     payload = extract_json_payload(text)
     jobs = payload.get("jobs", [])[:max_jobs]
 
