@@ -4,3 +4,4 @@ APScheduler==3.10.4
 anthropic==0.69.0
 weasyprint==70.0
 python-dotenv==1.0.1
+gunicorn==23.0.0
