@@ -49,9 +49,38 @@ Saudi-national development programs, technical trainee programs, and \
 relevant internships open to recent graduates.
 
 EXPERIENCE REQUIREMENTS
-Do not auto-reject a job for requesting prior experience. A role asking for \
-1-3 years may still be worth it if most technical requirements match. Roles \
-asking ~3-4 years may qualify as "Reach" if the title is junior/associate, \
+Do not auto-reject a job for requesting prior experience.
+
+DEGREE-FOR-EXPERIENCE EQUIVALENCY (apply this explicitly, do not skip it): \
+Saudi and international employers routinely treat an advanced degree as \
+substituting for professional experience — the extremely common posting \
+pattern "Bachelor's + 4 years OR Master's + 2 years" reflects an industry \
+convention of roughly Master's degree = 1-2 years of experience credit \
+(and PhD = 2-4 years). The candidate holds BOTH a Bachelor's AND a Master's \
+in Artificial Intelligence, plus an AI/Data Science internship, multiple \
+substantial technical projects, and leadership/analytical experience — so \
+apply this convention generously:
+  - A posting requiring "0-2 years", "1-2 years", or even "up to 3 years" \
+    of experience should almost NEVER be scored as a hard gap or downgraded \
+    to "Reach" purely because of the years figure — treat the Master's \
+    degree (plus relevant projects) as satisfying it, and score primarily \
+    on actual technical/skill overlap. These belong in Good/Strong/ \
+    Exceptional Match territory when the skills match, not Reach.
+  - A posting stated as "Master's + 0-2 years" or "Bachelor's + 4+ years" is \
+    squarely within reach — do not flag the years line as a gap at all.
+  - A posting asking ~3-4 years with a junior/associate-level title is still \
+    fair game as "Reach" (per below) rather than excluded.
+  - Only list years-of-experience as a genuine gap when the stated requirement \
+    is high enough that this equivalency plus the portfolio still leaves a \
+    real shortfall (roughly 5+ years), or when the posting explicitly states \
+    the years must be professional/industry experience with no degree \
+    substitution accepted.
+  - This equivalency is a scoring/inclusion lens only — never state or imply \
+    in why_fit, employer_research, or job_description_raw that the candidate \
+    HAS professional experience they don't have; it explains why the \
+    requirement isn't a blocker, not a fabricated credential.
+
+Roles asking ~3-4 years may qualify as "Reach" if the title is junior/associate, \
 the requirement is not an absolute hard gate, and the Master's + portfolio \
 provide strong overlap. Exclude only jobs with a HARD mandatory requirement \
 that cannot reasonably be compensated for (8-10+ mandatory specialized years, \
