@@ -9,6 +9,7 @@ the cap or cutoff has been hit, same as the automatic runs.
 
 import logging
 import threading
+import time
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
@@ -23,6 +24,13 @@ logger = logging.getLogger(__name__)
 
 _run_lock = threading.Lock()
 _run_in_progress = False
+_run_started_at = None
+
+# Safety valve: a real run (search + tailoring for up to DAILY_JOB_CAP jobs)
+# should never take this long. If the in-progress flag is still set after
+# this many seconds, treat it as wedged (e.g. a hung network call) rather
+# than letting it block the button/scheduler indefinitely.
+MAX_RUN_SECONDS = 15 * 60
 
 APPLY_RECOMMENDATIONS = ("APPLY_IMMEDIATELY", "APPLY")
 
@@ -38,9 +46,32 @@ def today_apply_count(app, local_date):
     ).count()
 
 
+def _is_run_actually_in_progress():
+    """Treats the in-progress flag as stale (and clears it) if it's been set
+    far longer than any real run should take — guards against a wedged
+    background thread permanently blocking future runs."""
+    global _run_in_progress, _run_started_at
+
+    if not _run_in_progress:
+        return False
+
+    if _run_started_at is not None and (time.monotonic() - _run_started_at) > MAX_RUN_SECONDS:
+        logger.warning("Search flag was stuck in-progress for over %ss; clearing it.", MAX_RUN_SECONDS)
+        _run_in_progress = False
+        _run_started_at = None
+        if _run_lock.locked():
+            try:
+                _run_lock.release()
+            except RuntimeError:
+                pass
+        return False
+
+    return True
+
+
 def is_eligible_to_run(app):
     """Returns (eligible: bool, reason: str)."""
-    if _run_in_progress:
+    if _is_run_actually_in_progress():
         return False, "A search is already running."
 
     now_local = local_now(app)
@@ -56,7 +87,7 @@ def is_eligible_to_run(app):
 
 
 def run_search_cycle(app):
-    global _run_in_progress
+    global _run_in_progress, _run_started_at
 
     if not _run_lock.acquire(blocking=False):
         logger.info("Search cycle already running, skipping this trigger.")
@@ -64,10 +95,12 @@ def run_search_cycle(app):
 
     try:
         _run_in_progress = True
+        _run_started_at = time.monotonic()
         with app.app_context():
             _run_search_cycle_locked(app)
     finally:
         _run_in_progress = False
+        _run_started_at = None
         _run_lock.release()
 
 
