@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block title %}Saudi Job Hunter — Dashboard{% endblock %}
+{% block content %}
+
+<header class="topbar">
+  <div>
+    <h1>Saudi Job Hunter</h1>
+    <p class="subtitle">Agent 1 finds &amp; verifies jobs · Agent 2 auto-generates your tailored resume &amp; cover letter</p>
+  </div>
+  <form method="post" action="{{ url_for('main.run_now') }}">
+    <button type="submit" class="run-btn" {% if not eligible %}disabled title="{{ reason }}"{% endif %}>
+      Run search now
+    </button>
+  </form>
+</header>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-stack">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<section class="status-bar">
+  <div class="status-chip">
+    <span class="status-label">Today's found jobs</span>
+    <span class="status-value">{{ count_today }} / {{ cap }}</span>
+  </div>
+  <div class="status-chip">
+    <span class="status-label">Search cutoff</span>
+    <span class="status-value">{{ cutoff_hour }}:00 ({{ timezone }})</span>
+  </div>
+  <div class="status-chip">
+    <span class="status-label">Now ({{ timezone }})</span>
+    <span class="status-value">{{ now_local.strftime('%Y-%m-%d %H:%M') }}</span>
+  </div>
+  {% if last_run %}
+  <div class="status-chip">
+    <span class="status-label">Last run</span>
+    <span class="status-value">{{ last_run.run_at.strftime('%Y-%m-%d %H:%M UTC') }} · {{ last_run.status }}</span>
+  </div>
+  {% endif %}
+  {% if not eligible %}
+  <div class="status-chip status-chip-muted">
+    <span class="status-label">Automated search paused</span>
+    <span class="status-value">{{ reason }}</span>
+  </div>
+  {% endif %}
+</section>
+
+{% if pending_jobs > 0 %}
+<div class="notice">Generating tailored resume/cover letter for {{ pending_jobs }} job(s)… refresh in a minute.</div>
+{% endif %}
+{% if error_jobs > 0 %}
+<div class="notice notice-error">{{ error_jobs }} job(s) today failed during generation — check server logs.</div>
+{% endif %}
+
+<section>
+  <h2 class="section-title">Today — Apply Now ({{ today_jobs|length }})</h2>
+  {% if today_jobs %}
+    <div class="job-grid">
+      {% for job in today_jobs %}
+        {% include "_job_card.html" %}
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="empty-state">No jobs found yet today. The agent runs automatically throughout the day (up to {{ cap }} jobs, before {{ cutoff_hour }}:00 {{ timezone }}).</p>
+  {% endif %}
+</section>
+
+{% if earlier_jobs %}
+<section>
+  <h2 class="section-title">Earlier opportunities</h2>
+  <div class="job-grid">
+    {% for job in earlier_jobs %}
+      {% include "_job_card.html" %}
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

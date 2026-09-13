@@ -1,0 +1,57 @@
+<article class="job-card rec-{{ job.recommendation|lower }}">
+  <div class="job-card-head">
+    <div>
+      <h3>{{ job.title }}</h3>
+      <div class="job-company">{{ job.company }} · {{ job.location }}</div>
+    </div>
+    <div class="fit-badge fit-{{ job.classification|lower|replace(' ', '-') }}">
+      {{ job.fit_score }}<span class="fit-max">/100</span>
+    </div>
+  </div>
+
+  <div class="badge-row">
+    <span class="badge badge-rec">{{ job.recommendation|replace('_', ' ') }}</span>
+    <span class="badge badge-class">{{ job.classification }}</span>
+    {% if job.source_type %}<span class="badge badge-source">{{ job.source_type }}</span>{% endif %}
+  </div>
+
+  <div class="job-meta">
+    {% if job.date_posted %}<span>Posted: {{ job.date_posted }}</span>{% endif %}
+    {% if job.application_deadline %}<span>Deadline: {{ job.application_deadline }}</span>{% endif %}
+    {% if job.agent2_fit_percentage %}<span>Application fit: {{ job.agent2_fit_percentage }}%</span>{% endif %}
+  </div>
+
+  {% if job.why_fit %}<p class="job-why">{{ job.why_fit }}</p>{% endif %}
+
+  {% if job.requirements_met_list() %}
+  <div class="job-list-block">
+    <div class="job-list-title">You already satisfy</div>
+    <ul class="job-list job-list-good">
+      {% for r in job.requirements_met_list() %}<li>{{ r }}</li>{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if job.gaps_list() %}
+  <div class="job-list-block">
+    <div class="job-list-title">Gaps ({{ job.gap_severity or 'unspecified' }})</div>
+    <ul class="job-list job-list-gap">
+      {% for g in job.gaps_list() %}<li>{{ g }}</li>{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  {% if job.employer_research %}
+  <p class="job-research"><strong>Why this employer:</strong> {{ job.employer_research }}</p>
+  {% endif %}
+
+  <div class="job-actions">
+    {% if job.resume_pdf_path %}
+      <a class="btn btn-doc" href="{{ url_for('main.resume_pdf', job_id=job.id) }}" target="_blank">Resume PDF</a>
+    {% endif %}
+    {% if job.cover_letter_pdf_path %}
+      <a class="btn btn-doc" href="{{ url_for('main.cover_letter_pdf', job_id=job.id) }}" target="_blank">Cover Letter PDF</a>
+    {% endif %}
+    <a class="btn btn-apply" href="{{ job.apply_url }}" target="_blank" rel="noopener">Apply →</a>
+  </div>
+</article>

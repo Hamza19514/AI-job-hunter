@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: Letter; margin: 0.85in 0.9in; }
+  body {
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 10.5pt;
+    line-height: 1.45;
+    color: #111;
+  }
+  .header { margin-bottom: 18pt; }
+  .name { font-size: 14pt; font-weight: bold; }
+  .contact-line { font-size: 9.5pt; margin-top: 2pt; }
+  a { color: #1a1a1a; text-decoration: underline; }
+  .date { margin-bottom: 14pt; }
+  .addressee { margin-bottom: 14pt; }
+  p { margin: 0 0 11pt 0; text-align: justify; }
+  .closing { margin-top: 6pt; }
+  .signoff-name { margin-top: 22pt; font-weight: bold; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <div class="name">{{ contact.name }}</div>
+    <div class="contact-line">
+      {{ contact.location }} &nbsp;|&nbsp; {{ contact.phone }} &nbsp;|&nbsp;
+      <a href="mailto:{{ contact.email }}">{{ contact.email }}</a> &nbsp;|&nbsp;
+      <a href="{{ contact.linkedin_url }}">{{ contact.linkedin_label }}</a>
+    </div>
+  </div>
+
+  <div class="date">{{ today }}</div>
+
+  <div class="addressee">
+    Hiring Team<br>
+    {{ company }}
+  </div>
+
+  <p>{{ opening }}</p>
+  {% for para in body_paragraphs %}
+  <p>{{ para }}</p>
+  {% endfor %}
+  <p class="closing">{{ closing }}</p>
+
+  <div>Sincerely,</div>
+  <div class="signoff-name">{{ contact.name }}</div>
+</body>
+</html>
