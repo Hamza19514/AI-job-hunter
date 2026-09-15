@@ -31,7 +31,7 @@
   </div>
   <div class="status-chip">
     <span class="status-label">Search cutoff</span>
-    <span class="status-value">{{ cutoff_hour }}:00 ({{ timezone }})</span>
+    <span class="status-value">{% if cutoff_hour >= 24 %}No cutoff{% else %}{{ cutoff_hour }}:00 ({{ timezone }}){% endif %}</span>
   </div>
   <div class="status-chip">
     <span class="status-label">Now ({{ timezone }})</span>
@@ -67,7 +67,7 @@
       {% endfor %}
     </div>
   {% else %}
-    <p class="empty-state">No jobs found yet today. The agent runs automatically throughout the day (up to {{ cap }} jobs, before {{ cutoff_hour }}:00 {{ timezone }}).</p>
+    <p class="empty-state">No jobs found yet today. The agent runs automatically throughout the day (up to {{ cap }} jobs{% if cutoff_hour < 24 %}, before {{ cutoff_hour }}:00 {{ timezone }}{% endif %}).</p>
   {% endif %}
 </section>
 

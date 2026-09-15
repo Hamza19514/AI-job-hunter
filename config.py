@@ -19,8 +19,10 @@ class Config:
     APPLICATOR_MODEL = os.environ.get("APPLICATOR_MODEL", "claude-sonnet-5")
 
     # Business rules
-    DAILY_JOB_CAP = int(os.environ.get("DAILY_JOB_CAP", "5"))
-    SEARCH_CUTOFF_HOUR_LOCAL = int(os.environ.get("SEARCH_CUTOFF_HOUR_LOCAL", "16"))  # 4pm
+    DAILY_JOB_CAP = int(os.environ.get("DAILY_JOB_CAP", "4"))
+    # 24 = no cutoff (hour is always < 24, so the cutoff check never trips).
+    # Set to e.g. 16 to restore a 4pm-local cutoff.
+    SEARCH_CUTOFF_HOUR_LOCAL = int(os.environ.get("SEARCH_CUTOFF_HOUR_LOCAL", "24"))
     TIMEZONE = os.environ.get("APP_TIMEZONE", "Asia/Riyadh")
 
     # How often the background scheduler checks for new jobs, in minutes.
