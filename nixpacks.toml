@@ -1,0 +1,2 @@
+[phases.setup]
+nixPkgs = ["pango", "harfbuzz", "fontconfig", "gdk-pixbuf", "shared-mime-info", "glib"]
