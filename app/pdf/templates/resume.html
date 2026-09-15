@@ -30,7 +30,8 @@
   table.contact td { padding: 0.5pt 0; vertical-align: top; }
   table.contact td.label { font-weight: bold; width: 70pt; }
   table.contact td.value { padding-left: 4pt; }
-  a { color: #1a1a1a; text-decoration: underline; }
+  a { color: #1155cc; text-decoration: underline; }
+  table.contact a { color: #1155cc; }
 
   h2.section {
     font-size: 10.2pt;
@@ -74,7 +75,7 @@
 
   <table class="contact">
     <tr><td class="label">Location:</td><td class="value">{{ contact.location }}</td></tr>
-    <tr><td class="label">Phone:</td><td class="value">{{ contact.phone }}</td></tr>
+    <tr><td class="label">Phone:</td><td class="value"><a href="tel:{{ contact.phone_tel }}">{{ contact.phone }}</a></td></tr>
     <tr><td class="label">Email:</td><td class="value"><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td></tr>
     <tr><td class="label">LinkedIn:</td><td class="value"><a href="{{ contact.linkedin_url }}">{{ contact.linkedin_label }}</a></td></tr>
     <tr><td class="label">GitHub:</td><td class="value"><a href="{{ contact.github_url }}">{{ contact.github_label }}</a></td></tr>

@@ -16,6 +16,7 @@ CONTACT = {
     "name": "Hamza Taheir Bu Obaid",
     "location": "Saudi Arabia",
     "phone": "0544456373",
+    "phone_tel": "+966544456373",
     "email": "hamzaboabid@gmail.com",
     "linkedin_label": "linkedin.com/in/hamza-bu-obaid-1062862b3",
     "linkedin_url": "https://www.linkedin.com/in/hamza-bu-obaid-1062862b3",
@@ -123,7 +124,7 @@ LEADERSHIP = [
     {
         "title": "Undocumented Students & Allies Outreach Volunteer",
         "org": "Illinois Tech",
-        "dates": "2025 - 2026",
+        "dates": "2025 – 2026",
         "bullets": [
             "Coordinated meetings between undocumented students and immigration attorneys, "
             "connecting students with relevant support and resources."
@@ -132,7 +133,7 @@ LEADERSHIP = [
     {
         "title": "Machine Learning Club Member",
         "org": "Illinois Tech",
-        "dates": "2024 - 2024",
+        "dates": "2024 – 2024",
         "bullets": [
             "Coordinated logistics for guest speaker events, including reserving campus venues, "
             "organizing schedules, and supporting speakers visiting from outside the university."

@@ -111,6 +111,23 @@ cannot verify it against an official source, DO NOT include it in your \
 output at all (this agent's output is used to auto-generate real \
 applications, so unverified leads must be dropped rather than flagged).
 
+A REAL, WORKING APPLY MECHANISM IS MANDATORY — this is a common failure mode, \
+watch for it specifically: many "official" pages (especially graduate/talent \
+programs like a Saudi employer's "Talent Incubation Program" or similar) are \
+marketing/informational pages ABOUT a program with no actual way to apply — \
+no form, no "Apply" button, no link to an ATS, sometimes just a "coming soon" \
+or "registration closed" state, or a page that only collects an email signup \
+for notifications rather than a real application. A page describing a program \
+positively is NOT the same as a page you can apply through. Before including \
+any job: (1) confirm the page has a genuine, currently-clickable application \
+action (an "Apply"/"Submit Application" button, an embedded form, or a link \
+that leads to an ATS like Workday/Greenhouse/Lever/Ashby/SuccessFactors/Oracle \
+where you can actually start an application), and (2) set apply_url to that \
+exact actionable page/link — never to a general "About this program" page \
+that has no application mechanism on it. If a program looks real and open but \
+you cannot find an actual way to apply right now, DO NOT include it — treat \
+it the same as a closed job.
+
 FRESHNESS & DEDUPE
 Prioritize jobs posted today or in the last 24-72 hours, then the last week. \
 Older jobs are fine if still officially open and a strong match. You will be \
